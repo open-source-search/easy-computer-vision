@@ -12,6 +12,7 @@ import sys
 import random
 import itertools
 import colorsys
+import cv2
 
 import numpy as np
 from skimage.measure import find_contours
@@ -25,7 +26,7 @@ ROOT_DIR = os.path.abspath("../")
 
 # Import Mask RCNN
 sys.path.append(ROOT_DIR)  # To find local version of the library
-from mrcnn import utils
+from mask_r_cnn.mrcnn import utils
 
 
 ############################################################
@@ -80,7 +81,7 @@ def apply_mask(image, mask, color, alpha=0.5):
     return image
 
 
-def display_instances(image, boxes, masks, class_ids, class_names,
+def display_instances_old(image, boxes, masks, class_ids, class_names,
                       scores=None, title="",
                       figsize=(16, 16), ax=None,
                       show_mask=True, show_bbox=True,
@@ -162,9 +163,63 @@ def display_instances(image, boxes, masks, class_ids, class_names,
             verts = np.fliplr(verts) - 1
             p = Polygon(verts, facecolor="none", edgecolor=color)
             ax.add_patch(p)
-    ax.imshow(masked_image.astype(np.uint8))
-    if auto_show:
-        plt.show()
+    # ax.imshow(masked_image.astype(np.uint8))
+
+    # if auto_show:
+    #     plt.show()
+    return masked_image.astype(np.uint8)
+
+
+# def random_colors(N):
+#     np.random.seed(1)
+#     colors = [tuple(255 * np.random.rand(3)) for _ in range(N)]
+#     return colors
+#
+#
+# def apply_mask(image, mask, color, alpha=0.5):
+#     """apply mask to image"""
+#     for n, c in enumerate(color):
+#         image[:, :, n] = np.where(
+#             mask == 1,
+#             image[:, :, n] * (1 - alpha) + alpha * c,
+#             image[:, :, n]
+#         )
+#     return image
+#
+# # image, boxes, masks, class_ids, class_names,
+def display_instances(image, boxes, masks, class_ids, class_names, scores):
+    """
+        take the image and results and apply the mask, box, and Label
+    """
+    # Number of instances
+    N = boxes.shape[0]
+    print("NUMBER OF PREDICTIONS: ", N)
+    if not N:
+        print("\n*** No instances to display *** \n")
+    else:
+        assert boxes.shape[0] == masks.shape[-1] == class_ids.shape[0]
+
+    for i in range(N):
+        if not np.any(boxes[i]):
+            continue
+
+        y1, x1, y2, x2 = boxes[i]
+        label = class_names[class_ids[i]]
+        score = scores[i] if scores is not None else None
+        caption = '{} {:.2f}'.format(label, score) if score else label
+        mask = masks[:, :, i]
+
+        try:
+            image = apply_mask(image, mask, (50, 205, 50))
+        except:
+            pass
+        image = cv2.rectangle(image, (x1, y1), (x2, y2), (50, 205, 50), 1)
+        image = cv2.putText(
+            image, caption, (x1, y1), cv2.FONT_HERSHEY_COMPLEX, 0.7, (255, 255, 0), 1
+        )
+
+
+    return image
 
 
 def display_differences(image,
