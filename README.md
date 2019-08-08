@@ -45,7 +45,7 @@ To predict against a video feed coming from webcam please run following steps:
 1) cd path/to/easy-computer-vision/
 2) python3 -m predict --video 0
 
-## Where does the output files get saved?
+## Where do the output files get saved?
 Output JSON file with predictions and output image/video file with predictions rendered on it are saved into:
 ```path/to/easy-computer-vision/output/```
 Unique filename is generated automatically using a timestamp.
