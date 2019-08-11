@@ -30,6 +30,16 @@ Section "Training a Model > Update Config" explains it in more detail.
 
 # Training a Model
 
+## Training Reqwuires Default Weights to be Downloaded
+Before you proceed to train the model, you need to download default weights. Default weights will be used as a starting
+point for training your model. Running below steps will download the default weights and place them into the path
+required by this platform. When download of the default weights is complete, then move onto the next step: "Update Config".
+Default weights file will be saved into the following path: "path/to/easy-computer-vision/coco_weights/mask_rcnn_coco.h5"
+
+Please execute following commands in the same order:
+1) cd path/to/easy-computer-vision/
+2) python3 -m utils.download_coco_weights
+
 ## Update Config
 Config pretty much contains all parameters required to create a DNN network. You can however leave them as they are.
 The only parameters you must update are the ones that point training pipeline to the training and validation datasets.
