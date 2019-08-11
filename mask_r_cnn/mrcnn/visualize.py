@@ -210,7 +210,7 @@ def display_instances(image, boxes, masks, class_ids, class_names, scores):
         mask = masks[:, :, i]
 
         try:
-            image = apply_mask(image, mask, (50, 205, 50))
+            image = apply_mask(image, mask, (50, 205, 205))
         except:
             pass
         image = cv2.rectangle(image, (x1, y1), (x2, y2), (50, 205, 50), 1)

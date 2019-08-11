@@ -15,6 +15,45 @@ TBD
 ## Install on Mac OS
 TBD
 
+## Install on Windows
+TBD
+
+# Preparing Images for Training (Labeling Data)
+We suggest to use the following tool to label your data. It's an inexpensive tool, which lets you label with polygons
+and at lets you export your labels in COCO format, which generates the annotations.json file that this framework
+requires for training.
+
+When you done labeling your images, export your labels in COCO format. Name exported file as "annotations.json" to stay
+consistent with our further instructions below. Path to the "annotations.json" for both, training and test datasets,
+will need to be specified in the config file from where training pipeline reads the instruction on what to train on.
+Section "Training a Model > Update Config" explains it in more detail.
+
+# Training a Model
+
+## Update Config
+Config pretty much contains all parameters required to create a DNN network. You can however leave them as they are.
+The only parameters you must update are the ones that point training pipeline to the training and validation datasets.
+When labeling data, RectLabel generated "annotations.json" file, which contains all meta data with X and Y coordinates
+for all labeled objects on the image. You will need to specify an absolute path to annotations.json for training and
+validation datasets. You will also need to specify path to the directory of images, which you were labeling.
+Config parameters that contain the paths are:
+```
+"TRAINING_ANNOTATIONS_FILE": "/path/to/training/dataset/annotations.json",
+"TRAINING_IMAGES_DIR": "/path/to/training/dataset/images/",
+"VALIDATION_ANNOTATIONS_FILE": "/path/to/validation/dataset/annotations.json",
+"VALIDATION_IMAGES_DIR": "/path/to/validation/dataset/images/",
+```
+The rest of the parameters, if you understand what they are, you could also modify. If you do not understand what they
+are yet, no worries. Just specify paths to datasets as explained above and start the training. Rest we built to be
+automated for parameters, which are calculated from datasets and those that are not, are set to values that should
+lead to a good result.
+
+## Start Model Training
+To start a training of you model, please execute following 2 commands i the same order:
+1) cd path/to/easy-computer-vision/
+2) python3 -m train
+
+
 # Running Predictions
 
 ## Prerequisite Steps

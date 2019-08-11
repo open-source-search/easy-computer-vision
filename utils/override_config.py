@@ -1,5 +1,3 @@
-
-
 import json
 
 from mask_r_cnn.mrcnn.config import Config
@@ -15,3 +13,9 @@ class OverrideConfig(Config):
 
     for param in params:
         vars()[param] = params[param]
+
+    with open(params["TRAINING_ANNOTATIONS_FILE"], "r") as file:
+        NUM_CLASSES = len(json.loads(file.read())["categories"]) + 1
+        print("NUM_CLASSES: ", NUM_CLASSES)
+
+    MINI_MASK_SHAPE = tuple(params["MINI_MASK_SHAPE"])

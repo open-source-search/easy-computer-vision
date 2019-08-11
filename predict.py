@@ -31,6 +31,7 @@ class Predict():
     ID = "id"
     NAME = "name"
     CATEGORY = "category"
+    CATEGORIES = "categories"
 
     def __init__(self):
         with open(self.CONFIG, "r") as file:
@@ -51,7 +52,7 @@ class Predict():
     def __get_cass_names(self):
         with open(self.annotations_path, "r") as file:
             data = json.loads(file.read())
-        return {category[self.ID]:category[self.NAME] for category in data[self.CATEGORY]}
+        return {category[self.ID]:category[self.NAME] for category in data[self.CATEGORIES]}
 
     def predict(self, model, image_path=None, video_path=None):
         assert image_path or video_path
@@ -60,7 +61,7 @@ class Predict():
             image = skimage.io.imread(image_path)
 
             results = model.detect([image], verbose=1)[0]
-            file_name = "splash_{:%Y%m%dT%H%M%S}.png".format(datetime.datetime.now())
+            file_name = "image_{:%Y%m%dT%H%M%S}.png".format(datetime.datetime.now())
 
             boxes = results[self.ROIS]
             masks = results[self.MASKS]
@@ -70,7 +71,8 @@ class Predict():
 
             splash = visualize.display_instances(image, boxes, masks, class_ids, class_names, scores)
 
-            skimage.io.imsave(file_name, splash)
+            skimage.io.imsave(os.path.join(self.OUTPUT_PATH, file_name), splash)
+            print()
 
         elif video_path:
             vcapture = cv2.VideoCapture(video_path)
@@ -78,8 +80,8 @@ class Predict():
             height = int(vcapture.get(cv2.CAP_PROP_FRAME_HEIGHT))
             fps = vcapture.get(cv2.CAP_PROP_FPS)
 
-            file_name = "splash_{:%Y%m%dT%H%M%S}.mp4".format(datetime.datetime.now())
-            vwriter = cv2.VideoWriter(file_name,
+            file_name = "video_{:%Y%m%dT%H%M%S}.mp4".format(datetime.datetime.now())
+            vwriter = cv2.VideoWriter(os.path.join(self.OUTPUT_PATH, file_name),
                                       cv2.VideoWriter_fourcc(*'MP4V'),
                                       fps, (width, height), True)
 
