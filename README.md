@@ -30,7 +30,7 @@ Section "Training a Model > Update Config" explains it in more detail.
 
 # Training a Model
 
-## Training Reqwuires Default Weights to be Downloaded
+## Training Requires Default Weights to be Downloaded
 Before you proceed to train the model, you need to download default weights. Default weights will be used as a starting
 point for training your model. Running below steps will download the default weights and place them into the path
 required by this platform. When download of the default weights is complete, then move onto the next step: "Update Config".
