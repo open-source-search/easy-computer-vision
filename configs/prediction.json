@@ -1,5 +1,5 @@
 {
 
-  "MODEL_DIR": "model/test/"
-
+  "MODEL_DIR": "model/test/",
+  "LOGS_DIR": "logs/"
 }
