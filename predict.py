@@ -10,6 +10,7 @@ from mask_r_cnn.mrcnn import visualize
 
 from utils.override_config import OverrideConfig
 from utils.global_storage import GlobalStorage
+from utils.parse_logs import ParseLogs
 
 
 DEFAULT_LOGS_DIR = "logs/"
@@ -34,12 +35,21 @@ class Predict():
     CATEGORIES = "categories"
 
     def __init__(self):
+
         with open(self.CONFIG, "r") as file:
             self.model_dir_path = json.loads(file.read())[self.MODEL_DIR]
+
         self.weights_path = os.path.join(self.model_dir_path, self.MODEL_FILENAME)
         self.annotations_path = os.path.join(self.model_dir_path, self.ANNOTATIONS_FILENAME)
         GlobalStorage.network_params = os.path.join(self.model_dir_path, self.PARAMS_FILENAME)
+
         self.config = OverrideConfig()
+
+        logs_file = "predict_{:%Y%m%dT%H%M%S}.log".format(datetime.datetime.now())
+        if not os.path.exists(self.config.LOGS_DIR):
+            os.makedirs(self.config.LOGS_DIR)
+        ParseLogs.redirect_logs_to_file(os.path.join(self.config.LOGS_DIR, logs_file))
+
         if not os.path.exists(self.OUTPUT_PATH):
             os.makedirs(self.OUTPUT_PATH)
 

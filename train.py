@@ -1,9 +1,12 @@
+import datetime
+import os
+
 from mask_r_cnn.mrcnn import model as modellib, utils
 
 from utils.override_config import OverrideConfig
 from utils.global_storage import GlobalStorage
 from utils.load_dataset import LoadDataset
-
+from utils.parse_logs import ParseLogs
 
 class Train():
 
@@ -26,6 +29,11 @@ class Train():
 
     def __init__(self):
         self.config = OverrideConfig()
+
+        logs_file = "train_{:%Y%m%dT%H%M%S}.log".format(datetime.datetime.now())
+        if not os.path.exists(self.config.LOGS_DIR):
+            os.makedirs(self.config.LOGS_DIR)
+        ParseLogs.redirect_logs_to_file(os.path.join(self.config.LOGS_DIR, logs_file))
 
         self.model = modellib.MaskRCNN(mode=self.MODE,
                                        config=self.config,
