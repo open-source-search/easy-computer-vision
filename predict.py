@@ -53,6 +53,7 @@ class Predict():
         if not os.path.exists(self.OUTPUT_PATH):
             os.makedirs(self.OUTPUT_PATH)
 
+
     def load_model(self):
         model = modellib.MaskRCNN(mode=self.MODE, config=self.config,
                                   model_dir=self.model_dir_path)

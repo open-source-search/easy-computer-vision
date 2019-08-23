@@ -28,6 +28,7 @@ consistent with our further instructions below. Path to the "annotations.json" f
 will need to be specified in the config file from where training pipeline reads the instruction on what to train on.
 Section "Training a Model > Update Config" explains it in more detail.
 
+
 # Training a Model
 
 ## Training Requires Default Weights to be Downloaded
@@ -62,6 +63,51 @@ lead to a good result.
 To start a training of you model, please execute following 2 commands i the same order:
 1) cd path/to/easy-computer-vision/
 2) python3 -m train
+
+
+# Choosing the best performing model
+
+Training pipeline will generate a model for each epoch. So for instance if you train for 100 epochs, you will have 100
+model dumps stored in the path: ```path/to/easy-computer-vision/models/```. You will need to choose only one model that
+is expected to perform best. To help you with that choice, we prepared a log parser script that will parse through logs,
+created while model was training and will output the following into the console:
+```
+Logs filename:  my_logs_file.log
+Lowest loss is at epoch 113/200.
+Lowest rpn_class_loss is at epoch 113/200.
+Lowest rpn_bbox_loss is at epoch 121/200.
+Lowest mrcnn_class_loss is at epoch 113/200.
+Lowest mrcnn_bbox_loss is at epoch 113/200.
+Lowest mrcnn_mask_loss is at epoch 113/200.
+Lowest val_loss is at epoch 79/200.
+Lowest val_rpn_class_loss is at epoch 70/200.
+Lowest val_rpn_bbox_loss is at epoch 123/200.
+Lowest val_mrcnn_class_loss is at epoch 106/200.
+Lowest val_mrcnn_bbox_loss is at epoch 81/200.
+Lowest val_mrcnn_mask_loss is at epoch 142/200.
+```
+
+The parameter: "Lowest val_loss is at epoch 79/200." points to the model, which would be your best performing model if
+you don't want to run additional tests. However, the best way to do it would be to take all models that script outputs
+and run predictions against all of them them to test them with actual predictions. Model, which would produce best
+accuracies, would be your best performing model. You would need only one model, rest of the ".h5" model files generated
+by the training pipeline could be deleted.
+
+## How to run the script to choose best model?
+By default, script will look for log files in the following path: ```path/to/easy-computer-vision/logs/```.
+However we added support for you to be able to pass your own absolute path to logs directory or to logs file.
+
+### To run this script as default:
+1) cd path/to/easy-computer-vision/
+2) sudo python3 -m utils.parse_logs
+
+### To run this script with your own path to logs directory:
+1) cd path/to/easy-computer-vision/
+2) sudo python3 -m utils.parse_logs --dirpath /path/to/logs/directory/
+
+### To run this script as default:
+1) cd path/to/easy-computer-vision/
+2) sudo python3 -m utils.parse_logs --filepath /path/to/logs/file/my_logs.log
 
 
 # Running Predictions
@@ -103,6 +149,7 @@ following flag in the prediction command:
 ```--nooutput```
 Full command will then look this way:
 ```python3 -m predict --nooutput --image /path/to/image/file.jpg```
+
 
 # References
 We forked the following implementation of Mask R-CNN algorithm and built framework around it:
