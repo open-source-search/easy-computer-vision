@@ -19,9 +19,9 @@ TBD
 TBD
 
 # Preparing Images for Training (Labeling Data)
-We suggest to use the following tool to label your data. It's an inexpensive tool, which lets you label with polygons
-and at lets you export your labels in COCO format, which generates the annotations.json file that this framework
-requires for training.
+We suggest to use the labeling tool called RectLabel to label your data. RectLabel could be downloaded on the website:
+"https://rectlabel.com". It's an inexpensive tool, which lets you label with polygons and lets you export your labels
+in COCO format, which generates the "annotations.json" file that this framework requires for training.
 
 When you done labeling your images, export your labels in COCO format. Name exported file as "annotations.json" to stay
 consistent with our further instructions below. Path to the "annotations.json" for both, training and test datasets,
@@ -113,12 +113,27 @@ However we added support for you to be able to pass your own absolute path to lo
 # Running Predictions
 
 ## Prerequisite Steps
-Before you could run a prediction against an image or a video, you first need to specify a path to the directory with
-all files belonging to the model, which you chose to be the golden egg model.
+Before you could run a prediction against an image or a video, you first need to specify a paths to the model itself
+and the files that are required for the model to be loaded and predicted against.
 
-Path to the model has to be specified in the "prediction.json" config file under key: "MODEL_DIR".
+Paths to required files should be specified in the prediction config file.
 "prediction.json" config is located at the following path:
 ```path/to/easy-computer-vision/configs/prediction.json```
+
+There are 3 paths that should be specified.
+1) "MODEL_FILE_PATH" - Is the absolute path to the model file with file extension: ".h5"
+2) "ANNOTATIONS_FILE_PATH" - Is the path to the COCO "annotations.json" file that was exported by RectLabel tool, which
+we suggested to be used to label training dataset in section: "Preparing Images for Training (Labeling Data)" of this
+README file.
+3) "PARAMS_FILE_PATH" - Is the path to the "training.json" config file, located at the path: "configs/training.json" of
+this platform. Its basically is the config file you used to train the model.
+
+NOTE: It is suggested to create a separate directory, for example: "path/to/platform/model/date_stamp/", and copy above
+3 files into that directory. It is important to preserve the "training.json" and "annotations.json" in the same state
+as was used to train the model. If you change them, model wo't load. Therefore the rule of thumb is to copy the golden
+egg model and 2 of the required configs into separate dated directory. So you have all configs that wee used to train
+the model backed up and stores separately in the same directory with the model. Later, if you modify original configs
+and retrain, files for previously trained models will stay unchaged.
 
 ## Predict Against an Image File
 To predict against an image please run following steps:

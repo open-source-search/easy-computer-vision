@@ -1,5 +1,6 @@
 {
-
-  "MODEL_DIR": "model/test/",
+  "MODEL_FILE_PATH": "path/to/model/mask_rcnn_ossecv_0225.h5",
+  "ANNOTATIONS_FILE_PATH": "path/to/model/annotations.json",
+  "PARAMS_FILE_PATH": "path/to/model/params.json",
   "LOGS_DIR": "logs/"
 }

@@ -19,10 +19,9 @@ DEFAULT_LOGS_DIR = "logs/"
 class Predict():
 
     CONFIG = "configs/prediction.json"
-    MODEL_DIR = "MODEL_DIR"
-    MODEL_FILENAME = "master.h5"
-    ANNOTATIONS_FILENAME = "annotations.json"
-    PARAMS_FILENAME = "params.json"
+    MODEL_FILE_PATH = "MODEL_FILE_PATH"
+    ANNOTATIONS_FILE_PATH = "ANNOTATIONS_FILE_PATH"
+    PARAMS_FILE_PATH = "PARAMS_FILE_PATH"
     MODE = "inference"
     OUTPUT_PATH = "output/"
     ROIS = "rois"
@@ -37,11 +36,11 @@ class Predict():
     def __init__(self):
 
         with open(self.CONFIG, "r") as file:
-            self.model_dir_path = json.loads(file.read())[self.MODEL_DIR]
+            self.prediction_config = json.loads(file.read())
 
-        self.weights_path = os.path.join(self.model_dir_path, self.MODEL_FILENAME)
-        self.annotations_path = os.path.join(self.model_dir_path, self.ANNOTATIONS_FILENAME)
-        GlobalStorage.network_params = os.path.join(self.model_dir_path, self.PARAMS_FILENAME)
+        self.weights_path = self.prediction_config[self.MODEL_FILE_PATH]
+        self.annotations_path = self.prediction_config[self.ANNOTATIONS_FILE_PATH]
+        GlobalStorage.network_params = self.prediction_config[self.PARAMS_FILE_PATH]
 
         self.config = OverrideConfig()
 
@@ -56,7 +55,7 @@ class Predict():
 
     def load_model(self):
         model = modellib.MaskRCNN(mode=self.MODE, config=self.config,
-                                  model_dir=self.model_dir_path)
+                                  model_dir=os.path.dirname(self.weights_path))
         model.load_weights(self.weights_path, by_name=True)
         return model
 
