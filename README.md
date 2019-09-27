@@ -57,8 +57,8 @@ Run following commands in the Terminal:
 NOTE: On Windows, please use following format for the commands:
 1) py -m train
 2) py -m predict --image C:\path\to\image\file.jpg
-... etc. So from bellow instructions, instead of typing a command as "python3 -m train", on Windows,
-type is as "py -m train". Everything else stays the same.
+... etc. So from below instructions, instead of typing a command as "python3 -m train", on Windows,
+type it as "py -m train". Everything else stays the same.
 
 
 # Preparing Images for Training (Labeling Data)
