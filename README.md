@@ -1,5 +1,3 @@
-THIS PLATFORM IS IN DEVELOPMENT. THIS MESSAGE WILL BE REMOVED AS SOON AS STABLE WORKING VERSION WILL BE RELEASED.
-
 # OSS Easy Computer Vision
 OSS Easy Computer Vision is an open source platform (part of OpenSourceSearch.com University's "Easy" series),
 built around Mask R-CNN algorithm. It is designed for those who would like to be able to train their own machine
@@ -10,13 +8,58 @@ object detection on image, directory of images, video file and live video stream
 
 # Installation Instructions
 ## Install on Ubuntu Linux
-TBD
+### Install Python3
+Ubuntu Linux versions 17.10 and 18.04 come wit Python3 preinstalled.
+Ubuntu Linux versions 17.04 and below, do not come wit Python3 preinstalled.
+If you are on Ubuntu 17.04 or lower, first install Python3.
+Run following commands in the Konsole:
+1) sudo apt-get update
+2) sudo apt-get install python3.6
+3) Test your installation by opening CMD and running command: "python3".
+
+### Install required modules/libraries:
+Run following commands in the Konsole:
+1) cd path/to/easy-computer-vision/
+2) sudo python3 -m pip install -r requirements.txt
+
 
 ## Install on Mac OS
-TBD
+### Install Python3
+Run following commands in the Terminal:
+1) xcode-select --install
+2) /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+3) brew install python3
+4) Test your installation by opening CMD and running command: "python3".
+
+### Install required modules/libraries:
+Run following commands in the Terminal:
+1) cd path/to/easy-computer-vision/
+2) sudo python3 -m pip install -r requirements.txt
+
 
 ## Install on Windows
-TBD
+### Install Python3 for Windows:
+1) Download Python3 executable installer from: "https://www.python.org/downloads/windows/".
+2) Double click on installer .exe file and follow the instructions to install Python3 on your Windows.
+3) Test your installation by opening CMD and running command: "py".
+
+### Check out OSS Easy Computer Vision code to your Windows computer:
+1) Open command prompt.
+2) cd to directory where you want code to be located on your windoes computer.
+3) Run command: "git clone https://github.com/open-source-search/easy-computer-vision.git"
+
+### Install required modules/libraries:
+1) cd C:\path\to\easy-computer-vision\
+2) py -m utils.get-pip
+3) py -m pip install --upgrade pip
+4) py -m pip install -r requirements.txt
+
+NOTE: On Windows, please use following format for the commands:
+1) py -m train
+2) py -m predict --image C:\path\to\image\file.jpg
+... etc. So from bellow instructions, instead of typing a command as "python3 -m train", on Windows,
+type is as "py -m train". Everything else stays the same.
+
 
 # Preparing Images for Training (Labeling Data)
 We suggest to use the labeling tool called RectLabel to label your data. RectLabel could be downloaded on the website:
