@@ -4,11 +4,13 @@ import datetime
 import os
 import json
 import argparse
+import numpy
+import logging
+logging.getLogger().setLevel(logging.INFO)
 
 from mask_r_cnn.mrcnn import model as modellib
 from mask_r_cnn.mrcnn import visualize
 
-from utils.override_config import OverrideConfig
 from utils.global_storage import GlobalStorage
 from utils.parse_logs import ParseLogs
 
@@ -32,6 +34,10 @@ class Predict():
     NAME = "name"
     CATEGORY = "category"
     CATEGORIES = "categories"
+    BOUNDING_BOX = 'bounding_box'
+    LABEL = 'label'
+    ACCURACY = 'accuracy'
+    PREDICTIONS = 'predictions'
 
     def __init__(self):
 
@@ -42,6 +48,7 @@ class Predict():
         self.annotations_path = self.prediction_config[self.ANNOTATIONS_FILE_PATH]
         GlobalStorage.network_params = self.prediction_config[self.PARAMS_FILE_PATH]
 
+        from utils.override_config import OverrideConfig
         self.config = OverrideConfig()
 
         logs_file = "predict_{:%Y%m%dT%H%M%S}.log".format(datetime.datetime.now())
@@ -64,14 +71,32 @@ class Predict():
             data = json.loads(file.read())
         return {category[self.ID]:category[self.NAME] for category in data[self.CATEGORIES]}
 
-    def predict(self, model, image_path=None, video_path=None):
+    def __fix_image(self, image_obj):
+        image_narray = numpy.array(image_obj)
+        if image_narray.shape[-1] == 4:
+            image_narray = image_narray[..., :3]
+        return image_narray
+
+    def __reformat_metadata(self, boxes, class_ids, class_names, scores):
+        output = []
+        for idx, id in enumerate(class_ids):
+            output.append({self.BOUNDING_BOX: [int(value) for value in boxes[idx]],
+                           self.ACCURACY: float(scores[idx]),
+                           self.LABEL: class_names[class_ids[idx]]})
+        return output
+
+    def __save_metadata(self, metadata, filepath):
+        data = json.dumps(metadata)
+        with open(filepath, "w") as file:
+            file.write(data)
+
+    def predict(self, model, image_path=None, video_path=None, nooutput=None):
         assert image_path or video_path
 
         if image_path:
             image = skimage.io.imread(image_path)
-
-            results = model.detect([image], verbose=1)[0]
-            file_name = "image_{:%Y%m%dT%H%M%S}.png".format(datetime.datetime.now())
+            results = model.detect([self.__fix_image(image)], verbose=1)[0]
+            file_name_stamp = "image_{:%Y%m%dT%H%M%S}".format(datetime.datetime.now())
 
             boxes = results[self.ROIS]
             masks = results[self.MASKS]
@@ -79,10 +104,15 @@ class Predict():
             class_names = self.__get_cass_names()
             scores = results[self.SCORES]
 
-            splash = visualize.display_instances(image, boxes, masks, class_ids, class_names, scores)
+            metadata = {self.PREDICTIONS: self.__reformat_metadata(boxes, class_ids, class_names, scores)}
 
-            skimage.io.imsave(os.path.join(self.OUTPUT_PATH, file_name), splash)
-            print()
+            if not nooutput:
+                splash = visualize.display_instances(image, boxes, masks, class_ids, class_names, scores)
+                skimage.io.imsave(os.path.join(self.OUTPUT_PATH, file_name_stamp+".png"), splash)
+                self.__save_metadata(metadata, os.path.join(self.OUTPUT_PATH, file_name_stamp+".json"))
+
+
+            return metadata
 
         elif video_path:
             vcapture = cv2.VideoCapture(video_path)
@@ -101,7 +131,7 @@ class Predict():
                 success, image = vcapture.read()
                 if success:
                     image = image[..., ::-1]
-                    results = model.detect([image], verbose=0)[0]
+                    results = model.detect([self.__fix_image(image)], verbose=0)[0]
 
                     boxes = results[self.ROIS]
                     masks = results[self.MASKS]
@@ -114,6 +144,8 @@ class Predict():
                     vwriter.write(splash)
                     count += 1
             vwriter.release()
+
+            return None
 
 
 
@@ -136,4 +168,4 @@ if __name__ == '__main__':
 
     pr = Predict()
     model = pr.load_model()
-    pr.predict(model, image_path=args.image, video_path=args.video)
+    pr.predict(model, image_path=args.image, video_path=args.video, nooutput=args.nooutput)

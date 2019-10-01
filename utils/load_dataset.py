@@ -2,7 +2,6 @@ import os
 import json
 import numpy as np
 from PIL import Image, ImageDraw
-import skimage
 
 import mask_r_cnn.mrcnn.utils as utils
 

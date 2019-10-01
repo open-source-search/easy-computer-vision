@@ -13,7 +13,8 @@ import random
 import itertools
 import colorsys
 import cv2
-
+import matplotlib
+matplotlib.use('Agg')
 import numpy as np
 from skimage.measure import find_contours
 import matplotlib.pyplot as plt

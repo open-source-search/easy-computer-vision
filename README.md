@@ -1,12 +1,7 @@
 # OSS Easy Computer Vision
-OSS Easy Computer Vision is an open source platform (part of OpenSourceSearch.com University's "Easy" series),
-built around Mask R-CNN algorithm. It is designed for those who would like to be able to train their own machine
-learning models for object detection on images or video, but do not know or want to code their own training/prediction
-pipeline. OSS Easy Computer Vision hides all complexity under it's hood and provides a very detailed documentation,
-making it as easy as possible for everyone to get involved training their models for computer vision. It supports
-object detection on image, directory of images, video file and live video stream.
+OSS Easy Computer Vision is an open source platform (part of OpenSourceSearch.com University's "Easy" series), built around Mask R-CNN algorithm. It is designed for those who would like to be able to train their own machine learning models for object detection on images or video, but do not know or want to code their own training/prediction pipeline. OSS Easy Computer Vision hides all complexity under it's hood and provides a very detailed documentation, making it as easy as possible for everyone to get involved training their models for computer vision. It supports object detection on image, directory of images, video file and live video stream.
 
-# Installation Instructions
+# Installation Instruction
 ## Install on Ubuntu Linux
 ### Install Python3
 Ubuntu Linux versions 17.10 and 18.04 come wit Python3 preinstalled.
@@ -55,8 +50,8 @@ Run following commands in the Terminal:
 4) py -m pip install -r requirements.txt
 
 NOTE: On Windows, please use following format for the commands:
-1) py -m train
-2) py -m predict --image C:\path\to\image\file.jpg
+1) py -m train.start_training
+2) py -m predict.run_prediction --image C:\path\to\image\file.jpg
 ... etc. So from below instructions, instead of typing a command as "python3 -m train", on Windows,
 type it as "py -m train". Everything else stays the same.
 
@@ -105,7 +100,7 @@ lead to a good result.
 ## Start Model Training
 To start a training of you model, please execute following 2 commands i the same order:
 1) cd path/to/easy-computer-vision/
-2) python3 -m train
+2) python3 -m train.start_training
 
 
 # Choosing the best performing model
@@ -153,7 +148,7 @@ However we added support for you to be able to pass your own absolute path to lo
 2) sudo python3 -m utils.parse_logs --filepath /path/to/logs/file/my_logs.log
 
 
-# Running Predictions
+# Running Predictions In Terminal/Konsole/CMD
 
 ## Prerequisite Steps
 Before you could run a prediction against an image or a video, you first need to specify a paths to the model itself
@@ -181,24 +176,24 @@ and retrain, files for previously trained models will stay unchaged.
 ## Predict Against an Image File
 To predict against an image please run following steps:
 1) cd path/to/easy-computer-vision/
-2) python3 -m predict --image /path/to/image/file.jpg
+2) python3 -m predict.run_prediction --image /path/to/image/file.jpg
 
 ## Predict Against a Video File
 To predict against a video please run following steps:
 1) cd path/to/easy-computer-vision/
-2) python3 -m predict --video /path/to/video/file.mp4
+2) python3 -m predict.run_prediction --video /path/to/video/file.mp4
 
 ## Predict Against a Video Stream
 To predict against a live video stream run following steps:
 1) cd path/to/easy-computer-vision/
-2) python3 -m predict --video http://www.somedomain.com/video/stream/
+2) python3 -m predict.run_prediction --video http://www.somedomain.com/video/stream/
 
 ## Predict Against a Video From Webcam
 To predict against a video feed coming from webcam please run following steps:
 1) cd path/to/easy-computer-vision/
-2) python3 -m predict --video 0
+2) python3 -m predict.run_prediction --video 0
 
-## Where do the output files get saved?
+## Where do prediction output files get saved?
 Output JSON file with predictions and output image/video file with predictions rendered on it are saved into:
 ```path/to/easy-computer-vision/output/```
 Unique filename is generated automatically using a timestamp.
@@ -206,7 +201,38 @@ We save prediction into an output image or video file by default. However you co
 following flag in the prediction command:
 ```--nooutput```
 Full command will then look this way:
-```python3 -m predict --nooutput --image /path/to/image/file.jpg```
+```python3 -m predict.run_prediction --nooutput --image /path/to/image/file.jpg```
+
+
+# Running Predictions using RESTful API
+
+As an example of how can predictions be made over the RESTful API, we have prepared following example that runs on Flask.
+We also prepared a script that sends an image file to API for upload, then outputs prediction results into console.
+When file is uploaded to API it is uploaded to the path: ```path/to/easy-computer-vision/uploads/```. However after
+prediction has been made, uploaded file gets deleted.
+
+## Start API:
+To start API, please run following commands:
+1) cd path/to/easy-computer-vision/
+2) python3 -m api.api
+
+## To run a test script, which passes image file to API for upload and prediction, run following commands:
+1) cd path/to/easy-computer-vision/
+2) python3 -m utils.post_file --image /path/to/image/file.jpg
+
+## Where do prediction output files get saved?
+Output JSON file with predictions and output image/video file with predictions rendered on it are saved into:
+```path/to/easy-computer-vision/output/```
+Unique filename is generated automatically using a timestamp.
+We save prediction into an output image or video file by default. However you could switch it off by specifying the
+following flag in the prediction command:
+```--nooutput```
+Full command will then look this way:
+```python3 -m predict.run_prediction --nooutput --image /path/to/image/file.jpg```
+
+NOTE: Each time you call for predictions, model is loading from scratch, therefore performance is not as fast as it
+could be if you would have loaded model into memory and had it ready as a static object to call for predictions.
+We will add this feature in one of our next deployments. For now as is.
 
 
 # References
