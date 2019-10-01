@@ -236,11 +236,7 @@ To start API, please run following commands:
 Output JSON file with predictions and output image/video file with predictions rendered on it are saved into:
 ```path/to/easy-computer-vision/output/```
 Unique filename is generated automatically using a timestamp.
-We save prediction into an output image or video file by default. However you could switch it off by specifying the
-following flag in the prediction command:
-```--nooutput```
-Full command will then look this way:
-```python3 -m predict.run_prediction --nooutput --image /path/to/image/file.jpg```
+
 
 NOTE: Each time you call for predictions, model is loading from scratch, therefore performance is not as fast as it
 could be if you would have loaded the model into memory and had it ready as a static object to call for predictions.
