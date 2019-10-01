@@ -66,7 +66,7 @@ class ParseLogs():
             print("\n\nLogs filename: ", log_file)
             for key in output_dict:
                 try:
-                    print("Lowest {} is at {}.".format(key, output_dict[key][self.EPOCH]).capitalize())
+                    print("Lowest {} is {} at {}.".format(key, output_dict[key][self.VALUE], output_dict[key][self.EPOCH]).capitalize())
                 except:
                     pass
 

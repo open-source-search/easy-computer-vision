@@ -1,7 +1,8 @@
 # OSS Easy Computer Vision
-OSS Easy Computer Vision is an open source platform (part of OpenSourceSearch.com University's "Easy" series), built around Mask R-CNN algorithm. It is designed for those who would like to be able to train their own machine learning models for object detection on images or video, but do not know or want to code their own training/prediction pipeline. OSS Easy Computer Vision hides all complexity under it's hood and provides a very detailed documentation, making it as easy as possible for everyone to get involved training their models for computer vision. It supports object detection on image, directory of images, video file and live video stream.
+OSS Easy Computer Vision is an open source platform (part of OpenSourceSearch.com University's "Easy" series), built around Mask R-CNN algorithm. It is designed for those who would like to be able to train their own machine learning models for object detection on images or video, but do not know how or want to code their own training/prediction pipelines. OSS Easy Computer Vision hides all complexity under it's hood and provides a very detailed documentation, making it as easy as possible for everyone to get involved training their models for computer vision. It supports object detection on image, directory of images, video file and live video stream.
 
-# Installation Instruction
+
+# Installation Instructions
 ## Install on Ubuntu Linux
 ### Install Python3
 Ubuntu Linux versions 17.10 and 18.04 come wit Python3 preinstalled.
@@ -11,6 +12,11 @@ Run following commands in the Konsole:
 1) sudo apt-get update
 2) sudo apt-get install python3.6
 3) Test your installation by opening CMD and running command: "python3".
+
+### Check out OSS Easy Computer Vision code to your Ubuntu Linux machine:
+1) Open command prompt.
+2) cd to directory where you want code to be located on your Ubuntu Linux machine.
+3) Run command: "git clone https://github.com/open-source-search/easy-computer-vision.git"
 
 ### Install required modules/libraries:
 Run following commands in the Konsole:
@@ -26,6 +32,11 @@ Run following commands in the Terminal:
 3) brew install python3
 4) Test your installation by opening CMD and running command: "python3".
 
+### Check out OSS Easy Computer Vision code to your Mac computer:
+1) Open command prompt.
+2) cd to directory where you want code to be located on your windows computer.
+3) Run command: "git clone https://github.com/open-source-search/easy-computer-vision.git"
+
 ### Install required modules/libraries:
 Run following commands in the Terminal:
 1) cd path/to/easy-computer-vision/
@@ -40,7 +51,7 @@ Run following commands in the Terminal:
 
 ### Check out OSS Easy Computer Vision code to your Windows computer:
 1) Open command prompt.
-2) cd to directory where you want code to be located on your windoes computer.
+2) cd to directory where you want code to be located on your windows computer.
 3) Run command: "git clone https://github.com/open-source-search/easy-computer-vision.git"
 
 ### Install required modules/libraries:
@@ -98,7 +109,7 @@ automated for parameters, which are calculated from datasets and those that are 
 lead to a good result.
 
 ## Start Model Training
-To start a training of you model, please execute following 2 commands i the same order:
+To start a training of your model, please execute following 2 commands in the same order:
 1) cd path/to/easy-computer-vision/
 2) python3 -m train.start_training
 
@@ -111,25 +122,26 @@ is expected to perform best. To help you with that choice, we prepared a log par
 created while model was training and will output the following into the console:
 ```
 Logs filename:  my_logs_file.log
-Lowest loss is at epoch 113/200.
-Lowest rpn_class_loss is at epoch 113/200.
-Lowest rpn_bbox_loss is at epoch 121/200.
-Lowest mrcnn_class_loss is at epoch 113/200.
-Lowest mrcnn_bbox_loss is at epoch 113/200.
-Lowest mrcnn_mask_loss is at epoch 113/200.
-Lowest val_loss is at epoch 79/200.
-Lowest val_rpn_class_loss is at epoch 70/200.
-Lowest val_rpn_bbox_loss is at epoch 123/200.
-Lowest val_mrcnn_class_loss is at epoch 106/200.
-Lowest val_mrcnn_bbox_loss is at epoch 81/200.
-Lowest val_mrcnn_mask_loss is at epoch 142/200.
+Lowest val_mrcnn_mask_loss is 0.0469 at epoch 210/450.
+Lowest val_mrcnn_class_loss is 0.0081 at epoch 215/450.
+Lowest val_rpn_class_loss is 0.001 at epoch 12/450.
+Lowest mrcnn_bbox_loss is 0.1013 at epoch 215/450.
+Lowest val_rpn_bbox_loss is 0.0204 at epoch 254/450.
+Lowest loss is 0.7116 at epoch 215/450.
+Lowest val_loss is 0.1129 at epoch 254/450.
+Lowest rpn_bbox_loss is 0.1884 at epoch 255/450.
+Lowest rpn_class_loss is 0.0054 at epoch 218/450.
+Lowest mrcnn_class_loss is 0.1414 at epoch 215/450.
+Lowest mrcnn_mask_loss is 0.2525 at epoch 216/450.
+Lowest val_mrcnn_bbox_loss is 0.018 at epoch 248/450.
 ```
 
-The parameter: "Lowest val_loss is at epoch 79/200." points to the model, which would be your best performing model if
-you don't want to run additional tests. However, the best way to do it would be to take all models that script outputs
-and run predictions against all of them them to test them with actual predictions. Model, which would produce best
-accuracies, would be your best performing model. You would need only one model, rest of the ".h5" model files generated
-by the training pipeline could be deleted.
+The parameter: "Lowest val_loss is at epoch 254/450." points to the model dump generated at 254th epoch, which would be
+your best performing model if you don't want to run additional tests. However, the best way to do it, would be, to take
+all models that script outputs and run predictions against all of them to test each model dump, running it through
+actual predictions. Model, which would produce best actual prediction accuracies, would be your best performing model.
+You would need only one model, therefore the rest of the ".h5" model files generated by the training pipeline could be
+deleted.
 
 ## How to run the script to choose best model?
 By default, script will look for log files in the following path: ```path/to/easy-computer-vision/logs/```.
@@ -231,8 +243,8 @@ Full command will then look this way:
 ```python3 -m predict.run_prediction --nooutput --image /path/to/image/file.jpg```
 
 NOTE: Each time you call for predictions, model is loading from scratch, therefore performance is not as fast as it
-could be if you would have loaded model into memory and had it ready as a static object to call for predictions.
-We will add this feature in one of our next deployments. For now as is.
+could be if you would have loaded the model into memory and had it ready as a static object to call for predictions.
+We will add this feature in one of our next builds. For now as is.
 
 
 # References
