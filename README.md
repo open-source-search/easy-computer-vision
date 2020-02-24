@@ -1,5 +1,5 @@
 # OSS Easy Computer Vision
-OSS Easy Computer Vision is an open source platform (part of OpenSourceSearch.com University's "Easy" series), built around Mask R-CNN algorithm. It is designed for those who would like to be able to train their own machine learning models for object detection on images or video, but do not know how or want to code their own training/prediction pipelines. OSS Easy Computer Vision hides all complexity under it's hood and provides a very detailed documentation, making it as easy as possible for everyone to get involved training their models for computer vision. It supports object detection on image, directory of images, video file and live video stream.
+OSS Easy Computer Vision is an open source platform, built around Mask R-CNN algorithm. It is designed for those who would like to be able to train their own machine learning models for object detection on images or video, but do not know how or want to code their own training/prediction pipelines. OSS Easy Computer Vision hides all complexity under it's hood and provides a very detailed documentation, making it as easy as possible for everyone to get involved training their models for computer vision. It supports object detection on image, directory of images, video file and live video stream.
 
 
 # Installation Instructions
