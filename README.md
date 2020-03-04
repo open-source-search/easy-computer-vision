@@ -21,7 +21,7 @@ Run following commands in the Konsole:
 ### Install required modules/libraries:
 Run following commands in the Konsole:
 1) cd path/to/easy-computer-vision/
-2) sudo python3 -m pip install -r requirements.txt
+2) sudo python3 -m pip install —upgrade —force-reinstall -r requirements.txt
 
 
 ## Install on Mac OS
@@ -40,7 +40,7 @@ Run following commands in the Terminal:
 ### Install required modules/libraries:
 Run following commands in the Terminal:
 1) cd path/to/easy-computer-vision/
-2) sudo python3 -m pip install -r requirements.txt
+2) sudo python3 -m pip install —upgrade —force-reinstall -r requirements.txt
 
 
 ## Install on Windows
@@ -58,7 +58,7 @@ Run following commands in the Terminal:
 1) cd C:\path\to\easy-computer-vision\
 2) py -m utils.get-pip
 3) py -m pip install --upgrade pip
-4) py -m pip install -r requirements.txt
+4) py -m pip install —upgrade —force-reinstall -r requirements.txt
 
 NOTE: On Windows, please use following format for the commands:
 1) py -m train.start_training
