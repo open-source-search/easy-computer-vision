@@ -94,7 +94,8 @@ class Predict():
         assert image_path or video_path
 
         if image_path:
-            image = skimage.io.imread(image_path)
+            # image = skimage.io.imread(image_path)
+            image = cv2.imread(image_path)
             results = model.detect([self.__fix_image(image)], verbose=1)[0]
             file_name_stamp = "image_{:%Y%m%dT%H%M%S}".format(datetime.datetime.now())
 
@@ -108,7 +109,8 @@ class Predict():
 
             if not nooutput:
                 splash = visualize.display_instances(image, boxes, masks, class_ids, class_names, scores)
-                skimage.io.imsave(os.path.join(self.OUTPUT_PATH, file_name_stamp+".png"), splash)
+                cv2.imwrite(os.path.join(self.OUTPUT_PATH, file_name_stamp+".png"), splash)
+                # skimage.io.imsave(os.path.join(self.OUTPUT_PATH, file_name_stamp+".png"), splash)
                 self.__save_metadata(metadata, os.path.join(self.OUTPUT_PATH, file_name_stamp+".json"))
 
 
@@ -140,6 +142,7 @@ class Predict():
                     scores = results[self.SCORES]
 
                     splash = visualize.display_instances(image, boxes, masks, class_ids, class_names, scores)
+                    cv2.imwrite(os.path.join(self.OUTPUT_PATH, "file.png"), splash)
 
                     vwriter.write(splash)
                     count += 1
@@ -169,3 +172,6 @@ if __name__ == '__main__':
     pr = Predict()
     model = pr.load_model()
     pr.predict(model, image_path=args.image, video_path=args.video, nooutput=args.nooutput)
+
+
+# Hello Tima. Adding comment here for your verification.
